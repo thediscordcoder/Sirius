@@ -3,4 +3,4 @@
 npm install
 
 @echo on
-npm start
+Installed packages, now run START.bat
