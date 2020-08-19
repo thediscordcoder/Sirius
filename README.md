@@ -23,7 +23,7 @@ or run `INSTALL.bat`
 6. Run `START.bat` or `npm start`!
 
 ## Support
-For any support, join [this](https://discord.gg/NOT_READY_YET) Discord server.
+For any support, join [this](https://discord.gg/XAaeXAd) Discord server.
 
 ## Credits
 Thanks to [Oli](https://github.com/xMistt), [Brain](https://github.com/BigBrain21) and TJ for inspiration of the bot.
