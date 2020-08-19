@@ -60,7 +60,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('RANDOM')
     .setTitle('Commands')
-    .setDescription('For a list of commands, please visit [this](https://github.com/Azlxy) website.')
+    .setDescription('For a list of commands, please visit [this](https://sirius-5.gitbook.io/sirius/commands) website for a list of commands.')
     message.channel.send(embed);
   }
 
@@ -165,18 +165,25 @@ discord.on('message', async message => {
     message.channel.send('Unready!');
   }
 
-
   if (command === 'info') {
     if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
     const skin = fortnite.party.me.outfit.split('\'')[0];
     const pickaxe = fortnite.party.me.pickaxe.split('\'')[0];
+
+    const incomingFriends = [];
+    const outgoingFriends = [];
+
+    fortnite.pendingFriends.forEach(friend => {
+      if (friend.direction === 'INCOMING') incomingFriends.push(friend);
+      if (friend.direction === 'OUTGOING') outgoingFriends.push(friend);
+    });
 
     const embed = new Discord.MessageEmbed()
     .setColor('ORANGE')
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
     .addField('Props', `Skin: ${skin}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : "None"}\nPickaxe: ${pickaxe}`)
-    .addField('Client', `Ready: ${fortnite.party.me.isReady ? "Yes" : "No"}`)
+    .addField('Client', `Ready: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}`)
     message.channel.send(embed);
   }
 
@@ -209,27 +216,33 @@ discord.on('message', async message => {
     .setDescription(`${user} has been promoted to party leader.`)
     message.channel.send(embed);
   }
+
+  if (command === 'send') {
+    const content = args.slice(0).join(' ');
+    fortnite.party.sendMessage(content);
+    message.channel.send('Successfully sent message!');
+  }
 });
 
 fortnite.on('party:invite', (invite) => {
-  console.log(`[FORTNITE] Received a party invitation from ${invite.sender.displayName}`);
+  console.log(`[SIRIUS] [FORTNITE] Received a party invitation from ${invite.sender.displayName}`);
   if (acceptInvite) { 
     invite.accept();
   } else {
     invite.decline();
   }
-   console.log(`[FORTNITE] Invite from ${invite.sender.displayName} has been ${acceptInvite ? 'accepted' : 'declined'}.`);
+   console.log(`[SIRIUS] [FORTNITE] Invite from ${invite.sender.displayName} has been ${acceptInvite ? 'accepted' : 'declined'}.`);
 });
 
 fortnite.on('friend:request', (request) => {
-  console.log(`[FORTNITE] Received a friend request from ${request.displayName}`);
+  console.log(`[SIRIUS] [FORTNITE] Received a friend request from ${request.displayName}`);
 
   if (acceptFriend) {
     request.accept();
   } else {
     request.decline();
   }
-  console.log(`[FORTNITE] Friend request from ${request.displayName} has been ${acceptFriend ? 'accepted' : 'declined'}`);
+  console.log(`[SIRIUS] [FORTNITE] Friend request from ${request.displayName} has been ${acceptFriend ? 'accepted' : 'declined'}`);
 });
 
 fortnite.on('ready', () => {
@@ -246,6 +259,10 @@ fortnite.on('ready', () => {
   }, 10000)
 });
 
+fortnite.on('message', message => {
+  console.log(`[SIRIUS] [FORTNITE] Message from ${message.sender.displayName}: ${message.content}`);
+});
+
   if (token !== 'TOKEN') { 
     discord.login(token); 
   } else {
@@ -256,5 +273,5 @@ fortnite.on('ready', () => {
 
   await fortnite.login();
   discord.login(token)
-  console.log(`[FORTNITE] Client ready as ${fortnite.user.displayName}.\n[DISCORD] Client ready as ${discord.user.tag}.`);
+  console.log(`[SIRIUS] [FORTNITE] Client ready as ${fortnite.user.displayName}.\n[SIRIUS] [DISCORD] Client ready as ${discord.user.tag}.`);
 })();
