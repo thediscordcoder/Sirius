@@ -1,12 +1,16 @@
 {
+  "cid": "CID_028_Athena_Commando_F",
+  "eid": "EID_Floss",
+  "bid": "BID_004_BlackKnight",
+  "pickaxeId": "Pickaxe_Lockjaw",
   "token": "TOKEN",
   "prefix": "-",
-  "discordStatus": "Hi!",
-  "discordStatusType": "PLAYING",
+  "discordStatus": "%ClientUserDisplayName%'s account | %PartyMemberCount% / 16",
+  "discordStatusType": "WATCHING",
   "fortniteStatus": "Hey",
   "fortnitePlatform": "WINDOWS",
   "acceptInvite": true,
   "acceptFriend": true,
-  "ownerIDs": ["YOUR", "DISCORD", "ID"],
+  "ownerIDs": ["OWNERID"],
   "ownerOnly": true
 }
