@@ -1,0 +1,12 @@
+{
+  "token": "TOKEN",
+  "prefix": "-",
+  "discordStatus": "Hi!",
+  "discordStatusType": "PLAYING",
+  "fortniteStatus": "Hey",
+  "fortnitePlatform": "WINDOWS",
+  "acceptInvite": true,
+  "acceptFriend": true,
+  "ownerIDs": ["YOUR", "DISCORD", "ID"],
+  "ownerOnly": true
+}
