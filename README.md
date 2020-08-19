@@ -13,7 +13,7 @@ or run `INSTALL.bat`
 2. [Create](https://discord.com/developers/applications) a bot account.
 
 3. Navigate to the bot window, copy the token. Remember to **NOT** share the token with anybody! This will result in your bot account being compromised.
-<td align="center"><a href="https://cdn.discordapp.com/attachments/745424999996719166/745676588414402621/botIcon.png"><img src="https://cdn.discordapp.com/attachments/745424999996719166/745676588414402621/botIcon.png" width="1000px;" alt=""/><br /><sub><b></b></sub></a><br /><a title=""></a></td>
+<td align="left"><a href="https://cdn.discordapp.com/attachments/745424999996719166/745676588414402621/botIcon.png"><img src="https://cdn.discordapp.com/attachments/745424999996719166/745676588414402621/botIcon.png" width="1000px;" alt=""/><br /><sub><b></b></sub></a><br /><a title=""></a></td>
 
 
 4. [Create](https://epicgames.com/id/register) an Epic Games account.
