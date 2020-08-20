@@ -165,6 +165,51 @@ discord.on('message', async message => {
     message.channel.send('Unready!');
   }
 
+  if (command === 'cid') {
+    const cid = args[0];
+    if (!cid) return message.channel.send('Please enter a *valid* CID.');
+
+    fortnite.party.me.setOutfit(cid);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`CID has been set to ${cid}!`)
+    message.channel.send(embed);
+  }
+
+  if (command === 'eid') {
+    const eid = args[0];
+    if (!eid) return message.channel.send('Please enter a *valid* EID.');;
+
+    fortnite.party.me.setEmote(eid);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`EID has been set to ${cid}!`)
+    message.channel.send(embed);  }
+
+  if (command === 'bid') {
+    const bid = args[0];
+    if (!bid) return message.channel.send('Please enter a *valid* BID.');
+
+    fortnite.party.me.setBackpack(bid);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`BID has been set to ${cid}!`)
+    message.channel.send(embed);  }
+
+  if (command === 'pickaxe_id') {
+    const pickaxe = args[0];
+    if (!pickaxe) return message.channel.send('Please enter a *valid* Pickaxe ID.');
+
+    fortnite.party.me.setPickaxe(cid);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Pickaxe ID has been set to ${cid}!`)
+    message.channel.send(embed);  }
+
   if (command === 'info') {
     if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
     const skin = fortnite.party.me.outfit.split('\'')[0];
