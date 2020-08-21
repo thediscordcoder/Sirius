@@ -2,6 +2,7 @@
 const Discord = require('discord.js'),
       fnbr = require('fnbr'),
       fetch = require('node-fetch'),
+      moment = require('moment'),
       config = require('./config.json'),
       { Client } = require('fnbr'),
       { token, cid, bid, eid, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform } = require('./config.json');
@@ -17,6 +18,8 @@ const getCosmetic = async (cosmeticType, cosmeticSearch) => { // https://github.
 
   return (await fetch(url)).json();
 };
+
+const time = moment().format('LTS').split(' ')[0];
 
 const Options = {
   status: fortniteStatus,
@@ -109,22 +112,6 @@ discord.on('message', async message => {
     if (cosmetic.status === 404) return error('pickaxe', message);
     fortnite.party.me.setPickaxe(cosmetic.data.id);
     success('Pickaxe', cosmetic, message);
-  }
-
-  if (command === 'banner') {
-    const banner = args[0];
-    const color = args[1];
-
-    if (!banner || !color) return message.channel.send(`Command usage: \`${prefix}banner BANNER COLOR\`\nExample: \`${prefix}banner 14 blue\``);
-
-    fortnite.party.me.setBanner(banner, color).then(() => {
-      const embed = new Discord.MessageEmbed()
-      .setColor('GREEN')
-      .setDescription(`Banner has been set to ${banner} with color ${color}.`)
-      message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
-    });
   }
 
   if (command === 'variants') {
@@ -336,11 +323,31 @@ discord.on('message', async message => {
       const embed = new Discord.MessageEmbed()
       .setColor('GREEN')
       .setTitle(':green_circle: Success')
-      .setDescription(`${invited} has been invited.`)
+      .setDescription(`${user} has been invited.`)
       message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
     });
+  }
+
+  if (command === 'join') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user) return message.channel.send('Please provide an user.');
+
+    fortnite.friends.forEach(friend => {
+      if (friend.displayName === user) {
+    friend.joinParty().then(invited => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setTitle(':green_circle: Success')
+      .setDescription(`Joined ${user}'s party.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+      }
+    })
   }
 
   if (command === 'send' || command === 'say') {
@@ -391,7 +398,7 @@ discord.on('message', async message => {
       const embed = new Discord.MessageEmbed()
       .setColor('GREEN')
       .setTitle(':green_circle: Success')
-      .setDescription(`${kicked} has been kicked from the party.`)
+      .setDescription(`${user} has been kicked from the party.`)
       message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
@@ -407,7 +414,7 @@ discord.on('message', async message => {
       const embed = new Discord.MessageEmbed()
       .setColor('GREEN')
       .setTitle(':green_circle: Success')
-      .setDescription(`${promoted} has been promoted to party leader.`)
+      .setDescription(`${user} has been promoted to party leader.`)
       message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
@@ -428,24 +435,24 @@ discord.on('message', async message => {
 });
 
 fortnite.on('party:invite', (invite) => {
-  console.log(`[SIRIUS] [FORTNITE] Received a party invitation from ${invite.sender.displayName}`);
+  console.log(`[SIRIUS] [FORTNITE] [${time}] Received a party invitation from ${invite.sender.displayName}`);
   if (acceptInvite) { 
     invite.accept();
   } else {
     invite.decline();
   }
-   console.log(`[SIRIUS] [FORTNITE] Invite from ${invite.sender.displayName} has been ${acceptInvite ? 'accepted' : 'declined'}.`);
+   console.log(`[SIRIUS] [FORTNITE] [${time}] Invite from ${invite.sender.displayName} has been ${acceptInvite ? 'accepted' : 'declined'}.`);
 });
 
 fortnite.on('friend:request', (request) => {
-  console.log(`[SIRIUS] [FORTNITE] Received a friend request from ${request.displayName}`);
+  console.log(`[SIRIUS] [FORTNITE] [${time}] Received a friend request from ${request.displayName}`);
 
   if (acceptFriend) {
     request.accept();
   } else {
     request.decline();
   }
-  console.log(`[SIRIUS] [FORTNITE] Friend request from ${request.displayName} has been ${acceptFriend ? 'accepted' : 'declined'}`);
+  console.log(`[SIRIUS] [FORTNITE] [${time}] Friend request from ${request.displayName} has been ${acceptFriend ? 'accepted' : 'declined'}`);
 });
 
 fortnite.on('ready', () => {
@@ -465,23 +472,23 @@ fortnite.on('ready', () => {
 });
 
 fortnite.on('message', message => {
-  console.log(`[SIRIUS] [FORTNITE] Message from ${message.sender.displayName}: ${message.content}`);
+  console.log(`[SIRIUS] [FORTNITE] [${time}] Message from ${message.sender.displayName}: ${message.content}`);
 });
 
 fortnite.on('friend:added', friend => {
-  console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has accepted your friend request.`);
+  console.log(`[SIRIUS] [FORTNITE] [${time}] ${friend.displayName} has accepted your friend request.`);
 });
 
   if (token !== 'TOKEN') { 
     discord.login(token); 
   } else {
-    return console.log('[SIRIUS] [DISCORD] Please provide a valid token in config.json');
+    return console.log(`[SIRIUS] [DISCORD] [${time}] Please provide a valid token in config.json`);
   }
 
   fortnite.on('deviceauth:created', (content) => writeFile('./deviceAuth.json', JSON.stringify(content, null, 2)));
 
   await fortnite.login();
   discord.login(token)
-  if (fortnite.user.displayName) console.log(`[SIRIUS] [FORTNITE] Client ready as ${fortnite.user.displayName}.`);
-  if (discord.user.tag) console.log(`[SIRIUS] [DISCORD] Client ready as ${discord.user.tag}.`);
+  if (fortnite.user.displayName) console.log(`[SIRIUS] [FORTNITE] [${time}] Client ready as ${fortnite.user.displayName}.`);
+  if (discord.user.tag) console.log(`[SIRIUS] [DISCORD] [${time}] Client ready as ${discord.user.tag}.`);
 })();
