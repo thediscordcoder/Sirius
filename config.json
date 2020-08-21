@@ -9,6 +9,7 @@
   "discordStatusType": "WATCHING",
   "fortniteStatus": "Hey",
   "fortnitePlatform": "WINDOWS",
+  "fortniteKairosID": "CID_028_Athena_Commando_F",
   "acceptInvite": true,
   "acceptFriend": true,
   "ownerIDs": ["OWNERID"],
