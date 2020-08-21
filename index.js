@@ -214,6 +214,7 @@ discord.on('message', async message => {
     if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
     const skin = fortnite.party.me.outfit.split('\'')[0];
     const pickaxe = fortnite.party.me.pickaxe.split('\'')[0];
+    const backpack = fortnite.party.me.backpack.split('\'')[0];
 
     const incomingFriends = [];
     const outgoingFriends = [];
@@ -227,40 +228,56 @@ discord.on('message', async message => {
     .setColor('ORANGE')
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
-    .addField('Props', `Skin: ${skin}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : "None"}\nPickaxe: ${pickaxe}`)
-    .addField('Client', `Ready: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}`)
+    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : "None"}\nPickaxe: ${pickaxe}`)
+    .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}`)
     message.channel.send(embed);
   }
 
-  if (command === 'kick') {
+  if (command === 'matchmakingkey') {
     if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
-    const user = args.slice(0).join(' ');
-    if (!user || !fortnite.party.me.role === 'CAPTAIN') return message.channel.send('Missing argument; no user specified, or i am not the party leader.');
+    const key = args.slice(0).join(' ');
+    if (!key || !fortnite.party.me.isLeader) return message.channel.send('Please provide a valid key and or I must be party leader.');
 
-    fortnite.party.kick(user).catch(e => {
-      return message.channel.send(`Error: ${e}`);
-    });
+    fortnite.party.setCustomMatchmakingKey(key);
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`${user} has been kicked from the party.`)
+    .setDescription(`Custom matchmaking key has been set to ${key}.`)
     message.channel.send(embed);
   }
 
-  if (command === 'promote') {
+  if (command === 'addfriend') {
     if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
     const user = args.slice(0).join(' ');
-    if (!user || !fortnite.party.me.role === 'CAPTAIN') return message.channel.send('Missing argument; no user specified, or i am not the party leader.');
+    if (!user) return message.channel.send('Please provide an user.');
 
-    fortnite.party.promote(user).catch(e => {
-      return message.channel.send(`Error: ${e}`);
-    });
+    fortnite.addFriend(user).then(friend => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`${user} has been promoted to party leader.`)
+    .setDescription(`Friend request has been send to ${friend}.`)
     message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
   }
+
+  if (command === 'removefriend' || command === 'unfriend') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user) return message.channel.send('Please provide an user.');
+
+    fortnite.removeFriend(user).then(friend => {
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`${friend} has been unfriended.`)
+    message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
+
 
   if (command === 'send') {
     const content = args.slice(0).join(' ');
@@ -297,7 +314,9 @@ fortnite.on('ready', () => {
   fortnite.party.me.setPickaxe(pickaxeId);
 
   const content = discordStatus;
-  const a = content.replace('%ClientUserDisplayName%', fortnite.user.displayName).replace('%PartyMemberCount%', fortnite.party.members.size);
+  const a = content.replace('%ClientUserDisplayName%', fortnite.user.displayName).replace('%PartyMemberCount%', fortnite.party.members.size).replace('%ClientPartyUserOutfit%', fortnite.party.me.outfit)
+  .replace('%ClientPartyUserPickaxe%', fortnite.party.me.pickaxe).replace('%ClientPartyUserEmote%', fortnite.party.me.emote).replace('%ClientPartyUserBackpack%', fortnite.party.me.backpack)
+  .replace('%ClientPartyUserIsReady%', fortnite.party.me.isReady).replace('%ClientPartyUserIsLeader%', fortnite.party.me.isLeader).replace('%ClientUserID%', fortnite.id)
 
   setInterval(function() {
     discord.user.setActivity(a, { type: discordStatusType});
@@ -318,5 +337,6 @@ fortnite.on('message', message => {
 
   await fortnite.login();
   discord.login(token)
-  console.log(`[SIRIUS] [FORTNITE] Client ready as ${fortnite.user.displayName}.\n[SIRIUS] [DISCORD] Client ready as ${discord.user.tag}.`);
+  if (fortnite.user.displayName) console.log(`[SIRIUS] [FORTNITE] Client ready as ${fortnite.user.displayName}.`);
+  if (discord.user.tag) console.log(`[SIRIUS] [DISCORD] Client ready as ${discord.user.tag}.`);
 })();
