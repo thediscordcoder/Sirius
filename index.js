@@ -412,6 +412,18 @@ discord.on('message', async message => {
       message.channel.send(`Error: ${e}`);
     });
   }
+
+  if (command === 'defaultset') {
+    fortnite.party.me.setOutfit(cid);
+    fortnite.party.me.setBackpack(bid);
+    fortnite.party.me.setEmote(eid);
+    fortnite.party.me.setPickaxe(pickaxeId);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Set from config has been loaded.')
+    message.channel.send(embed);
+  }
 });
 
 fortnite.on('party:invite', (invite) => {
