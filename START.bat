@@ -2,4 +2,4 @@
 
 npm start
 
-cls
+pause
