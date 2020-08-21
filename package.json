@@ -1,22 +1,28 @@
 {
   "name": "sirius",
   "version": "1.0.0",
-  "description": "An easy to use Fortnite bot.",
+  "description": "An easy to use Fortnite lobbybot.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azlxy/Sirius.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Azlxy",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Azlxy/Sirius/issues"
+  },
+  "homepage": "https://github.com/Azlxy/Sirius#readme",
   "dependencies": {
-    "common-tags": "^1.8.0",
     "discord.js": "^12.3.1",
     "fnbr": "^1.2.0",
-    "ms": "^2.1.2",
-    "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6",
+    "request-promise": "^4.2.6"
   }
 }
