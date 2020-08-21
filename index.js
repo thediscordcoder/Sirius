@@ -8,7 +8,7 @@ const Discord = require('discord.js'),
 
 const { readFile, writeFile } = require('fs').promises;
 
-const getCosmetic = async (cosmeticType, cosmeticSearch) => {
+const getCosmetic = async (cosmeticType, cosmeticSearch) => { // https://github.com/xMistt
   const url =
     "https://fortnite-api.com/v2/cosmetics/br/search" +
     "?matchMethod=contains" +
@@ -380,6 +380,38 @@ discord.on('message', async message => {
     .setDescription('Skin has been set to the Hologram skin from the Star Wars event.')
     message.channel.send(embed);
   }
+
+  if (command === 'kick') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user || !fortnite.party.me.isLeader) return message.channel.send('Missing user; or i am not party leader.');
+
+    fortnite.party.kick(user).then(kicked => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setTitle(':green_circle: Success')
+      .setDescription(`${kicked} has been kicked from the party.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
+
+  if (command === 'promote') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user || !fortnite.party.me.isLeader) return message.channel.send('Missing user; or i am not party leader.');
+
+    fortnite.party.promote(user).then(promoted => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setTitle(':green_circle: Success')
+      .setDescription(`${kicked} has been promoted to party leader.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
 });
 
 fortnite.on('party:invite', (invite) => {
@@ -430,7 +462,7 @@ fortnite.on('friend:added', friend => {
   if (token !== 'TOKEN') { 
     discord.login(token); 
   } else {
-    return console.log('[DISCORD] Please provide a valid token in config.json');
+    return console.log('[SIRIUS] [DISCORD] Please provide a valid token in config.json');
   }
 
   fortnite.on('deviceauth:created', (content) => writeFile('./deviceAuth.json', JSON.stringify(content, null, 2)));
