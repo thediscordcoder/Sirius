@@ -244,6 +244,7 @@ discord.on('message', async message => {
     .setColor('ORANGE')
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
+    .addField('Party Members', fortnite.party.members.map((o, index) => `${o.displayName}`))
     .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : "None"}\nPickaxe: ${pickaxe}`)
     .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
     message.channel.send(embed);
@@ -406,7 +407,7 @@ discord.on('message', async message => {
       const embed = new Discord.MessageEmbed()
       .setColor('GREEN')
       .setTitle(':green_circle: Success')
-      .setDescription(`${kicked} has been promoted to party leader.`)
+      .setDescription(`${promoted} has been promoted to party leader.`)
       message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
