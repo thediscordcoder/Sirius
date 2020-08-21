@@ -342,7 +342,7 @@ discord.on('message', async message => {
     });
   }
 
-  if (command === 'send') {
+  if (command === 'send' || command === 'say') {
     const content = args.slice(0).join(' ');
     fortnite.party.sendMessage(content);
     message.channel.send('Successfully sent message!');
