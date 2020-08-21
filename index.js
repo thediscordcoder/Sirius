@@ -8,7 +8,7 @@ const Discord = require('discord.js'),
 
 const { readFile, writeFile } = require('fs').promises;
 
-const getCosmetic = async (cosmeticType, cosmeticSearch) => { // https://github.com/xMistt
+const getCosmetic = async (cosmeticType, cosmeticSearch) => {
   const url =
     "https://fortnite-api.com/v2/cosmetics/br/search" +
     "?matchMethod=contains" +
