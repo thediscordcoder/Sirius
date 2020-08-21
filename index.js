@@ -111,8 +111,24 @@ discord.on('message', async message => {
     success('Pickaxe', cosmetic, message);
   }
 
+  if (command === 'banner') {
+    const banner = args[0];
+    const color = args[1];
+
+    if (!banner || !color) return message.channel.send(`Command usage: \`${prefix}banner BANNER COLOR\`\nExample: \`${prefix}banner 14 blue\``);
+
+    fortnite.party.me.setBanner(banner, color).then(() => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setDescription(`Banner has been set to ${banner} with color ${color}.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
+
   if (command === 'variants') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party');
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
     const cid = args[0];
     const channel = args[1];
     const variant = args[2];
@@ -229,7 +245,7 @@ discord.on('message', async message => {
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
     .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : "None"}\nPickaxe: ${pickaxe}`)
-    .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}`)
+    .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
     message.channel.send(embed);
   }
 
@@ -278,11 +294,91 @@ discord.on('message', async message => {
     });
   }
 
+  if (command === 'block') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user) return message.channel.send('Please provide an user.');
+
+    fortnite.blockFriend(user).then(blocked => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setTitle(':green_circle: Success')
+      .setDescription(`${blocked} has been blocked.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
+
+  if (command === 'unblock') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user) return message.channel.send('Please provide an user.');
+
+    fortnite.unblockFriend(user).then(unblocked => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setTitle(':green_circle: Success')
+      .setDescription(`${unblocked} has been unblocked.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
+
+  if (command === 'invite') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    const user = args.slice(0).join(' ');
+    if (!user) return message.channel.send('Please provide an user.');
+
+    fortnite.party.invite(user).then(invited => {
+      const embed = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setTitle(':green_circle: Success')
+      .setDescription(`${invited} has been invited.`)
+      message.channel.send(embed);
+    }).catch(e => {
+      message.channel.send(`Error: ${e}`);
+    });
+  }
 
   if (command === 'send') {
     const content = args.slice(0).join(' ');
     fortnite.party.sendMessage(content);
     message.channel.send('Successfully sent message!');
+  }
+
+  if (command === 'pinkghoul') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    fortnite.party.me.setOutfit('CID_029_Athena_Commando_F_Halloween', [{ channel: 'Material', variant: 'Mat3'}]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Ghoul Trooper with pink variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'purpleskull') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    fortnite.party.me.setOutfit('CID_030_Athena_Commando_M_Halloween', [{ channel: 'ClothingColor', variant: 'Mat1'}]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Skull Trooper with purple variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'hologram') {
+    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    fortnite.party.me.setOutfit('CID_VIP_Athena_Commando_M_GalileoGondola_SG');
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to the Hologram skin from the Star Wars event.')
+    message.channel.send(embed);
   }
 });
 
@@ -325,6 +421,10 @@ fortnite.on('ready', () => {
 
 fortnite.on('message', message => {
   console.log(`[SIRIUS] [FORTNITE] Message from ${message.sender.displayName}: ${message.content}`);
+});
+
+fortnite.on('friend:added', friend => {
+  console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has accepted your friend request.`);
 });
 
   if (token !== 'TOKEN') { 
