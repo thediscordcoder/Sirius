@@ -5,7 +5,7 @@ const Discord = require('discord.js'),
       moment = require('moment'),
       config = require('./config.json'),
       { Client } = require('fnbr'),
-      { token, cid, bid, eid, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform } = require('./config.json');
+      { token, cid, bid, eid, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
 
 const { readFile, writeFile } = require('fs').promises;
 
@@ -24,6 +24,10 @@ const time = moment().format('LTS').split(' ')[0];
 const Options = {
   status: fortniteStatus,
   platform: fortnitePlatform,
+    kairos: {
+      cid: fortniteKairosID,
+      color: Enums.KairosColor.BLUE,
+    },
   auth: {}
 }
 
@@ -52,6 +56,14 @@ function error(command, message) {
   message.channel.send(embed);
 }
 
+function notReady(message) {
+  const embed = new Discord.MessageEmbed()
+  .setColor('RED')
+  .setTitle(':red_circle: Error')
+  .setDescription('Fortnite client is not in a party, wait until it is ready.')
+  message.channel.send(embed);
+}
+
 discord.on('message', async message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   if (ownerOnly && !ownerIDs.includes(message.author.id)) return;
@@ -68,7 +80,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'skin') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const content = args.slice(0).join(' ');
     if (!content || content.length < 1) return message.channel.send('A valid parameter is required.');
 
@@ -79,7 +91,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'backpack') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const content = args.slice(0).join(' ');
     if (!content || content.length < 1) return message.channel.send('A valid parameter is required.');
 
@@ -90,7 +102,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'emote') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const content = args.slice(0).join(' ');
     if (!content || content.length < 1) { 
       fortnite.party.me.clearEmote();
@@ -104,7 +116,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'pickaxe') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const content = args.slice(0).join(' ');
     if (!content || content.length < 1) return message.channel.send('A valid parameter is required.');
 
@@ -115,7 +127,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'variants') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const cid = args[0];
     const channel = args[1];
     const variant = args[2];
@@ -131,7 +143,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'level') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const level = args[0];
     if (!level || isNaN(level)) return message.channel.send('Please enter a *valid* level.');
 
@@ -144,7 +156,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'bp' || command === 'battlepass') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const level = args[0];
     if (!level || isNaN(level)) return message.channel.send('Please enter a *valid* battlepass level.');
 
@@ -157,13 +169,13 @@ discord.on('message', async message => {
   }
 
   if (command === 'ready') {
-   if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+   if (!fortnite.party) return notReady(message);
    fortnite.party.me.setReadiness(true);
    message.channel.send('Ready!');
   }
 
   if (command === 'unready') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     fortnite.party.me.setReadiness(false);
     message.channel.send('Unready!');
   }
@@ -214,7 +226,7 @@ discord.on('message', async message => {
     message.channel.send(embed);  }
 
   if (command === 'info') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const skin = fortnite.party.me.outfit.split('\'')[0];
     const pickaxe = fortnite.party.me.pickaxe.split('\'')[0];
     const backpack = fortnite.party.me.backpack.split('\'')[0];
@@ -238,7 +250,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'matchmakingkey') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const key = args.slice(0).join(' ');
     if (!key || !fortnite.party.me.isLeader) return message.channel.send('Please provide a valid key and or I must be party leader.');
 
@@ -251,7 +263,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'addfriend') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user) return message.channel.send('Please provide an user.');
 
@@ -267,7 +279,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'removefriend' || command === 'unfriend') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user) return message.channel.send('Please provide an user.');
 
@@ -283,7 +295,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'block') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user) return message.channel.send('Please provide an user.');
 
@@ -299,7 +311,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'unblock') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user) return message.channel.send('Please provide an user.');
 
@@ -315,7 +327,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'invite') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user) return message.channel.send('Please provide an user.');
 
@@ -331,7 +343,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'join') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user) return message.channel.send('Please provide an user.');
 
@@ -357,7 +369,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'pinkghoul') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     fortnite.party.me.setOutfit('CID_029_Athena_Commando_F_Halloween', [{ channel: 'Material', variant: 'Mat3'}]);
 
     const embed = new Discord.MessageEmbed()
@@ -368,7 +380,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'purpleskull') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     fortnite.party.me.setOutfit('CID_030_Athena_Commando_M_Halloween', [{ channel: 'ClothingColor', variant: 'Mat1'}]);
 
     const embed = new Discord.MessageEmbed()
@@ -379,7 +391,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'hologram') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     fortnite.party.me.setOutfit('CID_VIP_Athena_Commando_M_GalileoGondola_SG');
 
     const embed = new Discord.MessageEmbed()
@@ -390,7 +402,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'kick') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user || !fortnite.party.me.isLeader) return message.channel.send('Missing user; or i am not party leader.');
 
@@ -406,7 +418,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'promote') {
-    if (!fortnite.party) return message.channel.send('Fortnite client is not in a party.');
+    if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
     if (!user || !fortnite.party.me.isLeader) return message.channel.send('Missing user; or i am not party leader.');
 
@@ -422,6 +434,7 @@ discord.on('message', async message => {
   }
 
   if (command === 'defaultset') {
+    if (!fortnite.party) return notReady(message);
     fortnite.party.me.setOutfit(cid);
     fortnite.party.me.setBackpack(bid);
     fortnite.party.me.setEmote(eid);
@@ -432,6 +445,15 @@ discord.on('message', async message => {
     .setDescription('Set from config has been loaded.')
     message.channel.send(embed);
   }
+
+  if (command === 'gift') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.clearEmote();
+    fortnite.party.me.setEmote('EID_NeverGonna');
+
+    message.channel.send('You thought i\'m going to gift you? Shame on you. :rofl:\n\nBut for real, watch this nice video: <https://www.youtube.com/watch?v=dQw4w9WgXcQ>. (believe me, it\'s real nice)');
+  }
+
 });
 
 fortnite.on('party:invite', (invite) => {
