@@ -593,6 +593,18 @@ discord.on('message', async message => {
     message.channel.send('You thought i\'m going to gift you? Shame on you. :rofl:\n\nBut for real, watch this nice video: <https://www.youtube.com/watch?v=dQw4w9WgXcQ>. (believe me, it\'s real nice)');
   }
 
+  if (command === 'floss') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.clearEmote();
+    fortnite.party.me.setEmote('EID_Floss');
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Emote has been set to Floss.')
+    message.channel.send(embed);
+  }
+
 });
 
 fortnite.on('party:invite', (invite) => {
