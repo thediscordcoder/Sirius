@@ -4,7 +4,7 @@ const Discord = require('discord.js'),
       fetch = require('node-fetch'),
       moment = require('moment'),
       config = require('./config.json'),
-      { Client } = require('fnbr'),
+      { Client, Enums } = require('fnbr'),
       { token, cid, bid, eid, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
 
 const { readFile, writeFile } = require('fs').promises;
@@ -18,8 +18,6 @@ const getCosmetic = async (cosmeticType, cosmeticSearch) => { // https://github.
 
   return (await fetch(url)).json();
 };
-
-const time = moment().format('LTS').split(' ')[0];
 
 const Options = {
   status: fortniteStatus,
@@ -93,9 +91,12 @@ discord.on('message', async message => {
   if (command === 'backpack') {
     if (!fortnite.party) return notReady(message);
     const content = args.slice(0).join(' ');
-    if (!content || content.length < 1) return message.channel.send('A valid parameter is required.');
+    let cosmetic = await getCosmetic('AthenaBackpack', content);
+    if (!content) {
+      fortnite.party.me.setBackpack('None');
+      return message.channel.send('Removed backpack.');
+    }
 
-    const cosmetic = await getCosmetic('AthenaBackpack', content);
     if (cosmetic.status === 404) return error('backpack', message);
     fortnite.party.me.setBackpack(cosmetic.data.id);
     success('Backpack', cosmetic, message);
@@ -192,6 +193,12 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
+  if (command === 'kill') {
+    console.log(`[SIRIUS] Destroyed Discord & Fortnite client.`);
+    discord.destroy();
+    fortnite.logout();
+  }
+
   if (command === 'eid') {
     const eid = args[0];
     if (!eid) return message.channel.send('Please enter a *valid* EID.');;
@@ -227,9 +234,9 @@ discord.on('message', async message => {
 
   if (command === 'info') {
     if (!fortnite.party) return notReady(message);
-    const skin = fortnite.party.me.outfit.split('\'')[0];
-    const pickaxe = fortnite.party.me.pickaxe.split('\'')[0];
-    const backpack = fortnite.party.me.backpack.split('\'')[0];
+    const skin = `${fortnite.party.me.outfit.split('\'')[0] ? fortnite.party.me.outfit.split('\'')[0] : 'None'}`;
+    const pickaxe = `${fortnite.party.me.pickaxe.split('\'')[0] ? fortnite.party.me.pickaxe.split('\'')[0] : 'None'}`;
+    const backpack = `${fortnite.party.me.backpack.split('\'')[0] ? fortnite.party.me.backpack.split('\'')[0] : 'None'}`;
 
     const incomingFriends = [];
     const outgoingFriends = [];
@@ -244,7 +251,7 @@ discord.on('message', async message => {
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
     .addField('Party Members', fortnite.party.members.map((o, index) => `${o.displayName}`))
-    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : "None"}\nPickaxe: ${pickaxe}`)
+    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote.split('\'')[0] : 'None'}\nPickaxe: ${pickaxe}`)
     .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
     message.channel.send(embed);
   }
@@ -401,6 +408,138 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
+  if (command === 'nohatrecon') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_022_Athena_Commando_F', [{ channel: 'Parts', variant: 'Stage2' }]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Recon Expert with no hat variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'goldenpeely') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_701_Athena_Commando_M_BananaAgent', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Agent Peely with golden agent variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'goldenmeowscles') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_693_Athena_Commando_M_BuffCat', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Meowscles with golden agent variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'goldentntina') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_691_Athena_Commando_F_TNTina', [{ channel: 'Progressive', variant: 'Stage7' }], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to TNTina with golden agent variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'goldenmidas') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_694_Athena_Commando_M_CatBurglar', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Midas with golden agent variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'goldenbrutus') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_692_Athena_Commando_M_HenchmanTough', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Brutus with golden agent variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'goldenskye') {
+    if (!fortnite.party) return notReady(message);
+    fortnite.party.me.setOutfit('CID_690_Athena_Commando_F_Photographer', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Skin has been set to Skye with golden agent variant.')
+    message.channel.send(embed);
+  }
+
+
+  if (command === 'season') {
+    if (!fortnite.party) return notReady(message);
+    const season = args[0];
+    if (!season || isNaN(season) || season <= 0 || season > 13) return message.channel.send('Must provide a number; season number must be greater than 0; season number must be less than current season.');
+
+    switch (season) {
+      case 1:
+        fortnite.party.me.setOutfit('CID_028_Athena_Commando_F');
+        break;
+      case 2:
+        fortnite.party.me.setOutfit('CID_035_Athena_Commando_M_Medieval');
+        break;
+      case 3:
+        fortnite.party.me.setOutfit('CID_084_Athena_Commando_M_Assassin');
+        break;
+      case 4:
+        fortnite.party.me.setOutfit('CID_116_Athena_Commando_M_CarbideBlack');
+        break;
+      case 5:
+        fortnite.party.me.setOutfit('CID_165_Athena_Commando_M_DarkViking');
+        break;
+      case 6:
+        fortnite.party.me.setOutfit('CID_230_Athena_Commando_M_Werewolf');
+        break;
+      case 7:
+        fortnite.party.me.setOutfit('CID_288_Athena_Commando_M_IceKing');
+        break;
+      case 8:
+        fortnite.party.me.setOutfit('CID_352_Athena_Commando_F_Shiny');
+        break;
+      case 9:
+        fortnite.party.me.setOutfit('CID_407_Athena_Commando_M_BattleSuit');
+        break;
+      case 10:
+        fortnite.party.me.setOutfit('CID_484_Athena_Commando_M_KnightRemix');
+        break;
+      case 11:
+        fortnite.party.me.setOutfit('CID_572_Athena_Commando_M_Viper');
+        break;
+      case 12:
+        fortnite.party.me.setOutfit('CID_694_Athena_Commando_M_CatBurglar');
+        break;
+      case 13:
+        fortnite.party.me.setOutfit('CID_767_Athena_Commando_F_BlackKnight');
+        break;
+    }
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Skin has been set to season ${season}'s max tier skin.`)
+    message.channel.send(embed);
+  }
+
   if (command === 'kick') {
     if (!fortnite.party) return notReady(message);
     const user = args.slice(0).join(' ');
@@ -457,24 +596,24 @@ discord.on('message', async message => {
 });
 
 fortnite.on('party:invite', (invite) => {
-  console.log(`[SIRIUS] [FORTNITE] [${time}] Received a party invitation from ${invite.sender.displayName}`);
+  console.log(`[SIRIUS] [FORTNITE] Received a party invitation from ${invite.sender.displayName}`);
   if (acceptInvite) { 
     invite.accept();
   } else {
     invite.decline();
   }
-   console.log(`[SIRIUS] [FORTNITE] [${time}] Invite from ${invite.sender.displayName} has been ${acceptInvite ? 'accepted' : 'declined'}.`);
+   console.log(`[SIRIUS] [FORTNITE] Invite from ${invite.sender.displayName} has been ${acceptInvite ? 'accepted' : 'declined'}.`);
 });
 
 fortnite.on('friend:request', (request) => {
-  console.log(`[SIRIUS] [FORTNITE] [${time}] Received a friend request from ${request.displayName}`);
+  console.log(`[SIRIUS] [FORTNITE] Received a friend request from ${request.displayName}`);
 
   if (acceptFriend) {
     request.accept();
   } else {
     request.decline();
   }
-  console.log(`[SIRIUS] [FORTNITE] [${time}] Friend request from ${request.displayName} has been ${acceptFriend ? 'accepted' : 'declined'}`);
+  console.log(`[SIRIUS] [FORTNITE] Friend request from ${request.displayName} has been ${acceptFriend ? 'accepted' : 'declined'}`);
 });
 
 fortnite.on('ready', () => {
@@ -494,23 +633,23 @@ fortnite.on('ready', () => {
 });
 
 fortnite.on('message', message => {
-  console.log(`[SIRIUS] [FORTNITE] [${time}] Message from ${message.sender.displayName}: ${message.content}`);
+  console.log(`[SIRIUS] [FORTNITE] Message from ${message.sender.displayName}: ${message.content}`);
 });
 
 fortnite.on('friend:added', friend => {
-  console.log(`[SIRIUS] [FORTNITE] [${time}] ${friend.displayName} has accepted your friend request.`);
+  console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has accepted your friend request.`);
 });
 
   if (token !== 'TOKEN') { 
     discord.login(token); 
   } else {
-    return console.log(`[SIRIUS] [DISCORD] [${time}] Please provide a valid token in config.json`);
+    return console.log(`[SIRIUS] [DISCORD] Please provide a valid token in config.json`);
   }
 
   fortnite.on('deviceauth:created', (content) => writeFile('./deviceAuth.json', JSON.stringify(content, null, 2)));
 
   await fortnite.login();
   discord.login(token)
-  if (fortnite.user.displayName) console.log(`[SIRIUS] [FORTNITE] [${time}] Client ready as ${fortnite.user.displayName}.`);
-  if (discord.user.tag) console.log(`[SIRIUS] [DISCORD] [${time}] Client ready as ${discord.user.tag}.`);
+  if (fortnite.user.displayName) console.log(`[SIRIUS] [FORTNITE] Client ready as ${fortnite.user.displayName}.`);
+  if (discord.user.tag) console.log(`[SIRIUS] [DISCORD] Client ready as ${discord.user.tag}.`);
 })();
