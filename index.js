@@ -604,7 +604,18 @@ discord.on('message', async message => {
     .setDescription('Emote has been set to Floss.')
     message.channel.send(embed);
   }
-
+  // Command added by wavy0 to anybody who is wondering why it is different.
+  if (command === 'fortknight') {
+     if (!fortnite.party) return notReady(message);
+     fortnite.party.me.setOutfit('CID_035_Athena_Commando_M_Medieval');
+     fortnite.party.me.setBackpack('BID_004_BlackKnight');
+     fortnite.party.me.setPickaxe('Pickaxe_Medieval');
+     const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription('Succesfully equipped the Fort Knights set.')
+    message.channel.send(embed);
+  }
 });
 
 fortnite.on('party:invite', (invite) => {
