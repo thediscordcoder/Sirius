@@ -602,7 +602,6 @@ discord.on('message', async message => {
     }
 
     fortnite.party.me.setOutfit(skin);
-    console.log(`Skin: ${skin}\n\nName: ${name}`)
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
