@@ -218,18 +218,18 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`BID has been set to ${cid}!`)
+    .setDescription(`BID has been set to ${bid}!`)
     message.channel.send(embed);  }
 
   if (command === 'pickaxe_id') {
     const pickaxe = args[0];
     if (!pickaxe) return message.channel.send('Please enter a *valid* Pickaxe ID.');
 
-    fortnite.party.me.setPickaxe(cid);
+    fortnite.party.me.setPickaxe(pickaxe);
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`Pickaxe ID has been set to ${cid}!`)
+    .setDescription(`Pickaxe ID has been set to ${pickaxe}!`)
     message.channel.send(embed);  }
 
   if (command === 'info') {
@@ -278,7 +278,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`Friend request has been send to ${friend}.`)
+    .setDescription(`Friend request has been send to ${user}.`)
     message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
@@ -294,7 +294,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`${friend} has been unfriended.`)
+    .setDescription(`${user} has been unfriended.`)
     message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
@@ -310,7 +310,7 @@ discord.on('message', async message => {
       const embed = new Discord.MessageEmbed()
       .setColor('GREEN')
       .setTitle(':green_circle: Success')
-      .setDescription(`${blocked} has been blocked.`)
+      .setDescription(`${user} has been blocked.`)
       message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
@@ -326,7 +326,7 @@ discord.on('message', async message => {
       const embed = new Discord.MessageEmbed()
       .setColor('GREEN')
       .setTitle(':green_circle: Success')
-      .setDescription(`${unblocked} has been unblocked.`)
+      .setDescription(`${user} has been unblocked.`)
       message.channel.send(embed);
     }).catch(e => {
       message.channel.send(`Error: ${e}`);
@@ -543,52 +543,70 @@ discord.on('message', async message => {
     const season = args[0];
     if (!season || isNaN(season) || season <= 0 || season > 13) return message.channel.send('Must provide a number; season number must be greater than 0; season number must be less than current season.');
 
+    let skin;
+    let name;
+
     switch (season) {
-      case 1:
-        fortnite.party.me.setOutfit('CID_028_Athena_Commando_F');
+      case '1':
+        name = 'Renegade Raider';
+        skin = 'CID_028_Athena_Commando_F';
         break;
-      case 2:
-        fortnite.party.me.setOutfit('CID_035_Athena_Commando_M_Medieval');
+      case '2':
+        name = 'Black Knight'
+        skin = 'CID_035_Athena_Commando_M_Medieval';
         break;
-      case 3:
-        fortnite.party.me.setOutfit('CID_084_Athena_Commando_M_Assassin');
+      case '3':
+        name = 'The Reaper'
+        skin = 'CID_084_Athena_Commando_M_Assassin';
         break;
-      case 4:
-        fortnite.party.me.setOutfit('CID_116_Athena_Commando_M_CarbideBlack');
+      case '4':
+        name = 'Omega'
+        skin = 'CID_116_Athena_Commando_M_CarbideBlack';
         break;
-      case 5:
-        fortnite.party.me.setOutfit('CID_165_Athena_Commando_M_DarkViking');
+      case '5':
+        name = 'Ragnarok';
+        skin = 'CID_165_Athena_Commando_M_DarkViking';
         break;
-      case 6:
-        fortnite.party.me.setOutfit('CID_230_Athena_Commando_M_Werewolf');
+      case '6':
+        name = 'Dire';
+        skin = 'CID_230_Athena_Commando_M_Werewolf';
         break;
-      case 7:
-        fortnite.party.me.setOutfit('CID_288_Athena_Commando_M_IceKing');
+      case '7':
+        name = 'The Ice King';
+        skin = 'CID_288_Athena_Commando_M_IceKing';
         break;
-      case 8:
-        fortnite.party.me.setOutfit('CID_352_Athena_Commando_F_Shiny');
+      case '8':
+        name = 'Luxe';
+        skin = 'CID_352_Athena_Commando_F_Shiny';
         break;
-      case 9:
-        fortnite.party.me.setOutfit('CID_407_Athena_Commando_M_BattleSuit');
+      case '9':
+        name = 'Vendetta';
+        skin = 'CID_407_Athena_Commando_M_BattleSuit';
         break;
-      case 10:
-        fortnite.party.me.setOutfit('CID_484_Athena_Commando_M_KnightRemix');
+      case '10':
+        name = 'Ultima Knight';
+        skin = 'CID_484_Athena_Commando_M_KnightRemix';
         break;
-      case 11:
-        fortnite.party.me.setOutfit('CID_572_Athena_Commando_M_Viper');
+      case '11':
+        name = 'Fusion';
+        skin = 'CID_572_Athena_Commando_M_Viper';
         break;
-      case 12:
-        fortnite.party.me.setOutfit('CID_694_Athena_Commando_M_CatBurglar');
+      case '12':
+        name = 'Midas';
+        skin = 'CID_694_Athena_Commando_M_CatBurglar';
         break;
-      case 13:
-        fortnite.party.me.setOutfit('CID_767_Athena_Commando_F_BlackKnight');
+      case '13':
+        name = 'Eternal Knight';
+        skin = 'CID_767_Athena_Commando_F_BlackKnight';
         break;
     }
 
+    fortnite.party.me.setOutfit(skin);
+    console.log(`Skin: ${skin}\n\nName: ${name}`)
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`Equipped season ${season}'s max tier skin.`)
+    .setDescription(`Equipped ${name}, season ${season}'s max tier skin.`)
     message.channel.send(embed);
   }
 
