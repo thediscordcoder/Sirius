@@ -5,7 +5,7 @@ const Discord = require('discord.js'),
       moment = require('moment'),
       config = require('./config.json'),
       { Client, Enums } = require('fnbr'),
-      { token, cid, bid, eid, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
+      { token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
 
 const { readFile, writeFile } = require('fs').promises;
 
@@ -158,14 +158,14 @@ discord.on('message', async message => {
 
   if (command === 'bp' || command === 'battlepass') {
     if (!fortnite.party) return notReady(message);
-    const level = args[0];
-    if (!level || isNaN(level)) return message.channel.send('Please enter a *valid* battlepass level.');
+    const battlepass = args.slice(0).join(' ');
+    if (!battlepass || isNaN(battlepass)) return message.channel.send('Please enter a *valid* battlepass level.');
 
-    fortnite.party.me.setBattlepass(true, level, '99999%', '165%');
+    fortnite.party.me.setBattlepass(true, parseInt(battlepass), 100, 100);
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`Battlepass level has been set to ${level}`)
+    .setDescription(`Battlepass level has been set to ${battlepass}`)
     message.channel.send(embed);
   }
 
@@ -715,6 +715,8 @@ fortnite.on('ready', () => {
   fortnite.party.me.setEmote(eid);
   fortnite.party.me.setBackpack(bid);
   fortnite.party.me.setPickaxe(pickaxeId);
+  fortnite.party.me.setBattlepass(true, parseInt(bp), 100, 100);
+  fortnite.party.me.setLevel(parseInt(level));
 
   const content = discordStatus;
   const a = content.replace('%ClientUserDisplayName%', fortnite.user.displayName).replace('%PartyMemberCount%', fortnite.party.members.size).replace('%ClientPartyUserOutfit%', fortnite.party.me.outfit)
