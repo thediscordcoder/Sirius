@@ -12,7 +12,7 @@
   "discordStatus": "%ClientUserDisplayName%'s account | %PartyMemberCount% / 16",
   "discordStatusType": "WATCHING",
   "fortniteStatus": "Hey",
-  "fortnitePlatform": "WINDOWS",
+  "fortnitePlatform": "WIN",
   "fortniteKairosID": "CID_028_Athena_Commando_F",
 
   "acceptInvite": true,
