@@ -11,8 +11,8 @@ const { readFile, writeFile } = require('fs').promises;
 
 const getCosmetic = async (cosmeticType, cosmeticSearch) => { // https://github.com/xMistt
   const url =
-    "https://fortnite-api.com/v2/cosmetics/br/search" +
-    "?matchMethod=contains" +
+    'https://fortnite-api.com/v2/cosmetics/br/search' +
+    '?matchMethod=contains' +
     `&name=${cosmeticSearch}` +
     `&backendType=${cosmeticType}`;
 
@@ -252,7 +252,7 @@ discord.on('message', async message => {
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
     .addField('Party Members', fortnite.party.members.map((o, index) => `${o.displayName}`))
     .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote.split('\'')[0] : 'None'}\nPickaxe: ${pickaxe}`)
-    .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? "Yes" : "No"}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
+    .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? 'Yes' : 'No'}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
     message.channel.send(embed);
   }
 
@@ -382,7 +382,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Ghoul Trooper with pink variant.')
+    .setDescription('Equipped Ghoul Trooper with pink variant.')
     message.channel.send(embed);
   }
 
@@ -393,7 +393,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Skull Trooper with purple variant.')
+    .setDescription('Equipped Skull Trooper with purple variant.')
     message.channel.send(embed);
   }
 
@@ -404,7 +404,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to the Hologram skin from the Star Wars event.')
+    .setDescription('Equipped the Hologram skin from the Star Wars event.')
     message.channel.send(embed);
   }
 
@@ -415,7 +415,59 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Recon Expert with no hat variant.')
+    .setDescription('Equipped Recon Expert with no hat variant.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'golden') {
+    if (!fortnite.party) return notReady(message);
+    const character = args.slice(0).join(' ');
+    if (!character) return message.channel.send('Must provide a character');
+
+    let skin;
+    let variant;
+    let name;
+
+    switch (character.toLowerCase()) {
+      case 'peely':
+        name = 'Agent Peely';
+        skin = 'CID_701_Athena_Commando_M_BananaAgent';
+        variant = 'Stage4';
+        break;
+      case 'meowscles':
+        name = 'Meowscles';
+        skin = 'CID_693_Athena_Commando_M_BuffCat';
+        variant = 'Stage4';
+        break;
+      case 'tntina':
+        name = 'TNTina';
+        skin = 'CID_691_Athena_Commando_F_TNTina';
+        variant = 'Stage7';
+        break;
+      case 'midas':
+        name = 'Midas';
+        skin = 'CID_694_Athena_Commando_M_CatBurglar';
+        variant = 'Stage4';
+        break;
+      case 'brutus':
+        name = 'Brutus';
+        skin = 'CID_692_Athena_Commando_M_HenchmanTough';
+        variant = 'Stage4';
+      case 'skye':
+        name = 'Skye';
+        skin = 'CID_690_Athena_Commando_F_Photographer';
+        variant = 'Stage4'
+        break;
+      default:
+        return message.channel.send(`${character} is not a valid skin.\n\nValid skins: \`peely, meowscles, tntina, midas, brutus, skye\``);
+    }
+
+    fortnite.party.me.setOutfit(skin, [{channel: 'Progressive', variant: variant}], [2, 350]);
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Equipped ${name} with golden agent variant.`)
     message.channel.send(embed);
   }
 
@@ -426,7 +478,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Agent Peely with golden agent variant.')
+    .setDescription('Equipped Agent Peely with golden agent variant.')
     message.channel.send(embed);
   }
 
@@ -437,7 +489,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Meowscles with golden agent variant.')
+    .setDescription('Equipped Meowscles with golden agent variant.')
     message.channel.send(embed);
   }
 
@@ -448,7 +500,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to TNTina with golden agent variant.')
+    .setDescription('Equipped TNTina with golden agent variant.')
     message.channel.send(embed);
   }
 
@@ -459,7 +511,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Midas with golden agent variant.')
+    .setDescription('Equipped Midas with golden agent variant.')
     message.channel.send(embed);
   }
 
@@ -470,7 +522,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Brutus with golden agent variant.')
+    .setDescription('Equipped Brutus with golden agent variant.')
     message.channel.send(embed);
   }
 
@@ -481,7 +533,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Skin has been set to Skye with golden agent variant.')
+    .setDescription('Equipped Skye with golden agent variant.')
     message.channel.send(embed);
   }
 
@@ -536,7 +588,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`Skin has been set to season ${season}'s max tier skin.`)
+    .setDescription(`Equipped season ${season}'s max tier skin.`)
     message.channel.send(embed);
   }
 
@@ -601,10 +653,10 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Emote has been set to Floss.')
+    .setDescription('Equipped Floss.')
     message.channel.send(embed);
   }
-  // Command added by wavy0 to anybody who is wondering why it is different.
+
   if (command === 'fortknight') {
      if (!fortnite.party) return notReady(message);
      fortnite.party.me.setOutfit('CID_035_Athena_Commando_M_Medieval');
@@ -613,9 +665,10 @@ discord.on('message', async message => {
      const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Succesfully equipped the Fort Knights set.')
+    .setDescription('Equipped all items in the Fort Knights set.')
     message.channel.send(embed);
   }
+
 });
 
 fortnite.on('party:invite', (invite) => {
