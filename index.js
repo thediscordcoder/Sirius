@@ -645,6 +645,20 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
+  if (command === 'point') {
+    if (!fortnite.party) return notReady(message);
+    pickaxe = args.slice(0).join(' ');
+    if (!pickaxe) pickaxe = `${fortnite.party.me.pickaxe.split('\'')[0]}`;
+
+    fortnite.party.me.setPickaxe(pickaxe);
+    fortnite.party.me.setEmote('EID_IceKing');
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Equipped ${pickaxe} & emote set to Point It Out`)
+    message.channel.send(embed);
+  }
+
 });
 
 fortnite.on('party:invite', (invite) => {
