@@ -647,7 +647,7 @@ discord.on('message', async message => {
 
   if (command === 'point') {
     if (!fortnite.party) return notReady(message);
-    pickaxe = args.slice(0).join(' ');
+    let pickaxe = args.slice(0).join(' ');
     if (!pickaxe) pickaxe = `${fortnite.party.me.pickaxe.split('\'')[0]}`;
 
     fortnite.party.me.setPickaxe(pickaxe);
