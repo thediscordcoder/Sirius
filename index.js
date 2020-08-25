@@ -207,7 +207,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`EID has been set to ${cid}!`)
+    .setDescription(`EID has been set to ${eid}!`)
     message.channel.send(embed);  }
 
   if (command === 'bid') {
@@ -648,7 +648,15 @@ discord.on('message', async message => {
   if (command === 'point') {
     if (!fortnite.party) return notReady(message);
     let pickaxe = args.slice(0).join(' ');
-    if (!pickaxe) pickaxe = `${fortnite.party.me.pickaxe.split('\'')[0]}`;
+    if (!pickaxe) { 
+      fortnite.party.me.setEmote('EID_IceKing');
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Emote has been set to Point It Out.`)
+    return message.channel.send(embed);
+    }
 
     fortnite.party.me.setPickaxe(pickaxe);
     fortnite.party.me.setEmote('EID_IceKing');
