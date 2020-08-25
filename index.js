@@ -9,7 +9,7 @@ const Discord = require('discord.js'),
 
 const { readFile, writeFile } = require('fs').promises;
 
-const getCosmetic = async (cosmeticType, cosmeticSearch) => { // https://github.com/xMistt
+const getCosmetic = async (cosmeticType, cosmeticSearch) => {
   const url =
     'https://fortnite-api.com/v2/cosmetics/br/search' +
     '?matchMethod=contains' +
@@ -251,7 +251,7 @@ discord.on('message', async message => {
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
     .addField('Party Members', fortnite.party.members.map((o, index) => `${o.displayName}`))
-    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote.split('\'')[0] : 'None'}\nPickaxe: ${pickaxe}`)
+    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : 'None'}\nPickaxe: ${pickaxe}`)
     .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? 'Yes' : 'No'}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
     message.channel.send(embed);
   }
@@ -471,73 +471,6 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
-  if (command === 'goldenpeely') {
-    if (!fortnite.party) return notReady(message);
-    fortnite.party.me.setOutfit('CID_701_Athena_Commando_M_BananaAgent', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription('Equipped Agent Peely with golden agent variant.')
-    message.channel.send(embed);
-  }
-
-  if (command === 'goldenmeowscles') {
-    if (!fortnite.party) return notReady(message);
-    fortnite.party.me.setOutfit('CID_693_Athena_Commando_M_BuffCat', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription('Equipped Meowscles with golden agent variant.')
-    message.channel.send(embed);
-  }
-
-  if (command === 'goldentntina') {
-    if (!fortnite.party) return notReady(message);
-    fortnite.party.me.setOutfit('CID_691_Athena_Commando_F_TNTina', [{ channel: 'Progressive', variant: 'Stage7' }], [2, 350]);
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription('Equipped TNTina with golden agent variant.')
-    message.channel.send(embed);
-  }
-
-  if (command === 'goldenmidas') {
-    if (!fortnite.party) return notReady(message);
-    fortnite.party.me.setOutfit('CID_694_Athena_Commando_M_CatBurglar', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription('Equipped Midas with golden agent variant.')
-    message.channel.send(embed);
-  }
-
-  if (command === 'goldenbrutus') {
-    if (!fortnite.party) return notReady(message);
-    fortnite.party.me.setOutfit('CID_692_Athena_Commando_M_HenchmanTough', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription('Equipped Brutus with golden agent variant.')
-    message.channel.send(embed);
-  }
-
-  if (command === 'goldenskye') {
-    if (!fortnite.party) return notReady(message);
-    fortnite.party.me.setOutfit('CID_690_Athena_Commando_F_Photographer', [{ channel: 'Progressive', variant: 'Stage4' }], [2, 350]);
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription('Equipped Skye with golden agent variant.')
-    message.channel.send(embed);
-  }
-
-
   if (command === 'season') {
     if (!fortnite.party) return notReady(message);
     const season = args[0];
@@ -683,6 +616,32 @@ discord.on('message', async message => {
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
     .setDescription('Equipped all items in the Fort Knights set.')
+    message.channel.send(embed);
+  }
+
+  if (command === 'henchman') {
+    if (!fortnite.party) return notReady(message);
+    const henchmans = ['CID_794_Athena_Commando_M_HenchmanBadShorts_D', 'CID_NPC_Athena_Commando_F_HenchmanSpyDark', 'CID_791_Athena_Commando_M_HenchmanGoodShorts_D', 'CID_780_Athena_Commando_M_HenchmanBadShorts', 'CID_NPC_Athena_Commando_M_HenchmanGood', 'CID_692_Athena_Commando_M_HenchmanTough', 'CID_707_Athena_Commando_M_HenchmanGood', 'CID_792_Athena_Commando_M_HenchmanBadShorts_B', 'CID_793_Athena_Commando_M_HenchmanBadShorts_C', 'CID_NPC_Athena_Commando_M_HenchmanBad', 'CID_790_Athena_Commando_M_HenchmanGoodShorts_C', 'CID_779_Athena_Commando_M_HenchmanGoodShorts', 'CID_NPC_Athena_Commando_F_RebirthDefault_Henchman', 'CID_NPC_Athena_Commando_F_HenchmanSpyGood', 'CID_706_Athena_Commando_M_HenchmanBad', 'CID_789_Athena_Commando_M_HenchmanGoodShorts_B'];
+    const henchman = Math.floor(Math.random() * henchmans.length);
+
+    fortnite.party.me.setOutfit(henchmans[henchman]);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Equipped a random Henchman: ${henchmans[henchman]}.`)
+    message.channel.send(embed);
+  }
+
+  if (command === 'marauder') {
+    if (!fortnite.party) return notReady(message);
+    const marauders = ['CID_NPC_Athena_Commando_M_MarauderHeavy', 'CID_NPC_Athena_Commando_M_MarauderElite', 'CID_NPC_Athena_Commando_M_MarauderGrunt'];
+    const marauder = Math.floor(Math.random() * marauders.length);
+
+    fortnite.party.me.setOutfit(marauders[marauder]);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Equipped a random Marauder: ${marauders[marauder]}`)
     message.channel.send(embed);
   }
 
