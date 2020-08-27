@@ -532,6 +532,10 @@ discord.on('message', async message => {
         name = 'Eternal Knight';
         skin = 'CID_767_Athena_Commando_F_BlackKnight';
         break;
+      case '14':
+        name = 'Tony Stark';
+        skin = 'CID_843_Athena_Commando_M_HightowerTomato_Casual';
+        break;
     }
 
     fortnite.party.me.setOutfit(skin);
