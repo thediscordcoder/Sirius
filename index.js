@@ -474,7 +474,7 @@ discord.on('message', async message => {
   if (command === 'season') {
     if (!fortnite.party) return notReady(message);
     const season = args[0];
-    if (!season || isNaN(season) || season <= 0 || season > 13) return message.channel.send('Must provide a number; season number must be greater than 0; season number must be less than current season.');
+    if (!season || isNaN(season) || season <= 0 || season > 14) return message.channel.send('Must provide a number; season number must be greater than 0; season number must be less than current season.');
 
     let skin;
     let name;
@@ -668,6 +668,17 @@ discord.on('message', async message => {
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
     .setDescription(`Equipped ${pickaxe} & emote set to Point It Out`)
+    message.channel.send(embed);
+  }
+
+  if (command === 'leave') {
+    if (!fortnite.party) return notReady(message);
+
+    fortnite.party.leave(true);
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Left the current party.`)
     message.channel.send(embed);
   }
 
