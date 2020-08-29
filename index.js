@@ -9,6 +9,14 @@ const Discord = require('discord.js'),
 
 const { readFile, writeFile } = require('fs').promises;
 
+Object.defineProperty(Array.prototype, 'flat', {
+    value: function(depth = 1) {
+      return this.reduce(function (flat, toFlatten) {
+        return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+      }, []);
+    }
+});
+
 const getCosmetic = async (cosmeticType, cosmeticSearch) => {
   const url =
     'https://fortnite-api.com/v2/cosmetics/br/search' +
@@ -51,6 +59,14 @@ function error(command, message) {
   .setColor('RED')
   .setTitle(':red_circle: Error')
   .setDescription(`No ${command} was found using current parameters.`)
+  message.channel.send(embed);
+}
+
+function error2(message, error) {
+  const embed = new Discord.MessageEmbed()
+  .setColor('RED')
+  .setTitle(':red_circle: Error')
+  .setDescription(`An error has occured: ${error}.`)
   message.channel.send(embed);
 }
 
@@ -135,7 +151,7 @@ discord.on('message', async message => {
     if (!cid || !channel || !variant) return message.channel.send(`Command usage: \`${prefix}variants CID CHANNEL VARIANT\`\nExample: \`${prefix}variants CID_029_Athena_Commando_F_Halloween Material Mat3\``);
 
 
-    fortnite.party.me.setOutfit(cid, [{channel: channel, variant: variant}]);
+    fortnite.party.me.setOutfit(cid, [{channel: channel, variant: variant}], [2, 350]);
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
@@ -250,9 +266,9 @@ discord.on('message', async message => {
     .setColor('ORANGE')
     .setTitle('Client Information')
     .addField('Party', `Members: ${fortnite.party.members.size}\nLeader: ${fortnite.party.leader.displayName}`)
-    .addField('Party Members', fortnite.party.members.map((o, index) => `${o.displayName}`))
-    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : 'None'}\nPickaxe: ${pickaxe}`)
-    .addField('Client', `Name: ${fortnite.user.displayName}\nReady: ${fortnite.party.me.isReady ? 'Yes' : 'No'}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
+    .addField('Party Members', fortnite.party.members.map(o => `${o.displayName}`))
+    .addField('Props', `Skin: ${skin}\nBackpack: ${backpack}\nEmote: ${fortnite.party.me.emote ? fortnite.party.me.emote : 'None'}\nPickaxe: ${pickaxe}\nReady: ${fortnite.party.me.isReady ? 'Yes' : 'No'}`)
+    .addField('Client', `Name: ${fortnite.user.displayName}\nFriends: ${fortnite.friends.size}\nIncoming Friends: ${incomingFriends.length}\nOutgoing Friends: ${outgoingFriends.length}\nTotal: ${incomingFriends.length + outgoingFriends.length}\nBlocked: ${fortnite.blockedFriends.size}`);
     message.channel.send(embed);
   }
 
@@ -280,8 +296,8 @@ discord.on('message', async message => {
     .setTitle(':green_circle: Success')
     .setDescription(`Friend request has been send to ${user}.`)
     message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -296,8 +312,8 @@ discord.on('message', async message => {
     .setTitle(':green_circle: Success')
     .setDescription(`${user} has been unfriended.`)
     message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -312,8 +328,8 @@ discord.on('message', async message => {
       .setTitle(':green_circle: Success')
       .setDescription(`${user} has been blocked.`)
       message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -328,8 +344,8 @@ discord.on('message', async message => {
       .setTitle(':green_circle: Success')
       .setDescription(`${user} has been unblocked.`)
       message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -344,8 +360,8 @@ discord.on('message', async message => {
       .setTitle(':green_circle: Success')
       .setDescription(`${user} has been invited.`)
       message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -362,8 +378,8 @@ discord.on('message', async message => {
       .setTitle(':green_circle: Success')
       .setDescription(`Joined ${user}'s party.`)
       message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
       }
     })
@@ -557,8 +573,8 @@ discord.on('message', async message => {
       .setTitle(':green_circle: Success')
       .setDescription(`${user} has been kicked from the party.`)
       message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -573,8 +589,8 @@ discord.on('message', async message => {
       .setTitle(':green_circle: Success')
       .setDescription(`${user} has been promoted to party leader.`)
       message.channel.send(embed);
-    }).catch(e => {
-      message.channel.send(`Error: ${e}`);
+    }).catch(error => {
+      error2(message, error);
     });
   }
 
@@ -682,6 +698,51 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
+      try {
+      const code = args.join(" ");
+      let evaled = eval(code);
+ 
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+ 
+      message.channel.send(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
+  }
+
+  if (command === 'hide') {
+    if (!fortnite.party) return notReady(message);
+
+  const rawSquadAssignments = fortnite.party.meta.get('Default:RawSquadAssignments_j')["RawSquadAssignments"];
+
+  for (member in rawSquadAssignments) {
+    console.log(member);
+    if (member.memberId !== fortnite.user.id) fortnite.party.meta.remove(member);
+  }
+
+    fortnite.party.me.meta.set('Default:RawSquadAssignments_j', { 'RawSquadAssignments': rawSquadAssignments });
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Hid everyone in the party.`)
+    message.channel.send(embed);
+  }
+
+  if (command === 'unhide') {
+    if (!fortnite.party) return notReady(message);
+
+    fortnite.party.me.meta.set('Default:RawSquadAssignments_j', { 'RawSquadAssignments': fortnite.party.meta });
+
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setTitle(':green_circle: Success')
+    .setDescription(`Unhided everyone in the party.`)
+    message.channel.send(embed);
+  }
+
+
 });
 
 fortnite.on('party:invite', (invite) => {
@@ -728,7 +789,11 @@ fortnite.on('message', message => {
 });
 
 fortnite.on('friend:added', friend => {
-  console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has accepted your friend request.`);
+  console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has been added to your friend list.`);
+});
+
+fortnite.on('friend:removed', friend => {
+  console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has been removed from your friend list.`);
 });
 
   if (token !== 'TOKEN') { 
