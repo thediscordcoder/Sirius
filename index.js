@@ -698,19 +698,6 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
-      try {
-      const code = args.join(" ");
-      let evaled = eval(code);
- 
-      if (typeof evaled !== "string")
-        evaled = require("util").inspect(evaled);
- 
-      message.channel.send(clean(evaled), {code:"xl"});
-    } catch (err) {
-      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-    }
-  }
-
   if (command === 'hide') {
     if (!fortnite.party) return notReady(message);
 
@@ -809,3 +796,4 @@ fortnite.on('friend:removed', friend => {
   if (fortnite.user.displayName) console.log(`[SIRIUS] [FORTNITE] Client ready as ${fortnite.user.displayName}.`);
   if (discord.user.tag) console.log(`[SIRIUS] [DISCORD] Client ready as ${discord.user.tag}.`);
 })();
+x
