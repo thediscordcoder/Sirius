@@ -784,7 +784,8 @@ fortnite.on('friend:removed', friend => {
 });
 
 fortnite.on('party:member:joined', partyMember => {
-  fortnite.party.sendMessage(customJoinMessage);
+  const message = customJoinMessage.replace('%Member%', partyMember.displayName);
+  fortnite.party.sendMessage(message);
 });
 
   if (token !== 'TOKEN') { 
