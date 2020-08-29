@@ -11,6 +11,8 @@
   "prefix": "-",
   "discordStatus": "%ClientUserDisplayName%'s account | %PartyMemberCount% / 16",
   "discordStatusType": "WATCHING",
+  
+   "customJoinMessage": "Hey %Member%!",
   "fortniteStatus": "Hey",
   "fortnitePlatform": "WIN",
   "fortniteKairosID": "CID_028_Athena_Commando_F",
