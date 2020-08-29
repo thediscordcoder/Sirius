@@ -698,38 +698,6 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
-  if (command === 'hide') {
-    if (!fortnite.party) return notReady(message);
-
-  const rawSquadAssignments = fortnite.party.meta.get('Default:RawSquadAssignments_j')["RawSquadAssignments"];
-
-  for (member in rawSquadAssignments) {
-    console.log(member);
-    if (member.memberId !== fortnite.user.id) fortnite.party.meta.remove(member);
-  }
-
-    fortnite.party.me.meta.set('Default:RawSquadAssignments_j', { 'RawSquadAssignments': rawSquadAssignments });
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription(`Hid everyone in the party.`)
-    message.channel.send(embed);
-  }
-
-  if (command === 'unhide') {
-    if (!fortnite.party) return notReady(message);
-
-    fortnite.party.me.meta.set('Default:RawSquadAssignments_j', { 'RawSquadAssignments': fortnite.party.meta });
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription(`Unhided everyone in the party.`)
-    message.channel.send(embed);
-  }
-
-
 });
 
 fortnite.on('party:invite', (invite) => {
