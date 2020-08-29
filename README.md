@@ -33,7 +33,7 @@ or run `INSTALL.bat`
 
 11. When it finally asks for authorization code, put this part **ONLY**.
 
-<td align="left"><a href="https://cdn.discordapp.com/attachments/748522409371631688/749385095160528927/Screenshot_2020-08-29_at_22.48.27.png"><img src="https://cdn.discordapp.com/attachments/748522409371631688/749385095160528927/Screenshot_2020-08-29_at_22.48.27.png" width="1000px;" alt=""/><br /><sub><b></b></sub></a><br /><a title=""></a></td>
+<td align="left"><a href="https://cdn.discordapp.com/attachments/748522409371631688/749386714350354512/Screenshot_2020-08-29_at_22.54.47.png"><img src="https://cdn.discordapp.com/attachments/748522409371631688/749386714350354512/Screenshot_2020-08-29_at_22.54.47.png" width="1000px;" alt=""/><br /><sub><b></b></sub></a><br /><a title=""></a></td>
 
 And press `ENTER`!
 
