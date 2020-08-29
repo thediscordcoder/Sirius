@@ -5,7 +5,7 @@ const Discord = require('discord.js'),
       moment = require('moment'),
       config = require('./config.json'),
       { Client, Enums } = require('fnbr'),
-      { token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
+      { customJoinMessage, token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
 
 const { readFile, writeFile } = require('fs').promises;
 
@@ -781,6 +781,10 @@ fortnite.on('friend:added', friend => {
 
 fortnite.on('friend:removed', friend => {
   console.log(`[SIRIUS] [FORTNITE] ${friend.displayName} has been removed from your friend list.`);
+});
+
+fortnite.on('party:member:joined', partyMember => {
+  fortnite.party.sendMessage(customJoinMessage);
 });
 
   if (token !== 'TOKEN') { 
