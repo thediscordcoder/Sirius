@@ -11,6 +11,7 @@
   "prefix": "-",
   "discordStatus": "%ClientUserDisplayName%'s account | %PartyMemberCount% / 16",
   "discordStatusType": "WATCHING",
+  "discordStatus": "idle",
   
    "customJoinMessage": "Hey %Member%!",
   "fortniteStatus": "Hey",
