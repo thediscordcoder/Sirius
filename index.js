@@ -5,7 +5,7 @@ const Discord = require('discord.js'),
       moment = require('moment'),
       config = require('./config.json'),
       { Client, Enums } = require('fnbr'),
-      { customJoinMessage, token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
+      { discordUserStatus, customJoinMessage, token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config.json');
 
 const { readFile, writeFile } = require('fs').promises;
 
@@ -698,51 +698,6 @@ discord.on('message', async message => {
     message.channel.send(embed);
   }
 
-  if (command === 'hide') {
-    if (!fortnite.party) return notReady(message);
-
-  const rawSquadAssignments = fortnite.party.meta.get('Default:RawSquadAssignments_j')["RawSquadAssignments"];
-
-  for (member in rawSquadAssignments) {
-    console.log(member);
-    if (member.memberId !== fortnite.user.id) fortnite.party.meta.remove(member);
-  }
-
-    fortnite.party.me.meta.set('Default:RawSquadAssignments_j', { 'RawSquadAssignments': rawSquadAssignments });
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription(`Hid everyone in the party.`)
-    message.channel.send(embed);
-  }
-
-  if (command === 'unhide') {
-    if (!fortnite.party) return notReady(message);
-
-    fortnite.party.me.meta.set('Default:RawSquadAssignments_j', { 'RawSquadAssignments': fortnite.party.meta });
-
-    const embed = new Discord.MessageEmbed()
-    .setColor('GREEN')
-    .setTitle(':green_circle: Success')
-    .setDescription(`Unhided everyone in the party.`)
-    message.channel.send(embed);
-  }
-
-      try {
-      const code = args.join(" ");
-      let evaled = eval(code);
- 
-      if (typeof evaled !== "string")
-        evaled = require("util").inspect(evaled);
- 
-      message.channel.send(clean(evaled), {code:"xl"});
-    } catch (err) {
-      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-    }
-  }
-
-
 });
 
 fortnite.on('party:invite', (invite) => {
@@ -779,7 +734,7 @@ fortnite.on('ready', () => {
   .replace('%ClientPartyUserPickaxe%', fortnite.party.me.pickaxe).replace('%ClientPartyUserEmote%', fortnite.party.me.emote).replace('%ClientPartyUserBackpack%', fortnite.party.me.backpack)
   .replace('%ClientPartyUserIsReady%', fortnite.party.me.isReady).replace('%ClientPartyUserIsLeader%', fortnite.party.me.isLeader).replace('%ClientUserID%', fortnite.id)
 
-  discord.user.setStatus('idle')
+  discord.user.setStatus(discordUserStatus)
 
   setInterval(function() {
     discord.user.setActivity(a, { type: discordStatusType});
