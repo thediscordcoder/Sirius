@@ -294,7 +294,7 @@ discord.on('message', async message => {
     const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription(`Friend request has been send to ${user}.`)
+    .setDescription(`Friend request has been sent to ${user}.`)
     message.channel.send(embed);
     }).catch(error => {
       error2(message, error);
