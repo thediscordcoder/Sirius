@@ -1,5 +1,5 @@
 <h1 align="center">Sirius</h1>
-<p align="center">An easy to use Fortnite lobbybot.</p>
+<p align="center">An easy to use Fortnite lobby bot.</p>
 
 ## How to install
 Requirements: [NPM](https://npmjs.com/get-npm), [NodeJS](https://nodejs.org)
