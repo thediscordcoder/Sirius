@@ -12,6 +12,8 @@ npm install
 ```
 or run `INSTALL.bat`
 
+or run `install.sh`
+
 3. [Create](https://discord.com/developers/applications) a bot account.
 
 4. Navigate to the bot window, copy the token. Remember to **NOT** share the token with anybody! This will result in your bot account being compromised.
@@ -29,7 +31,7 @@ or run `INSTALL.bat`
 
 9. Configure the bot in `config.json` and enter the authorization code when starting [here](https://www.epicgames.com/id/logout?redirectUrl=https%3A//www.epicgames.com/id/login%3FredirectUrl%3Dhttps%253A%252F%252Fwww.epicgames.com%252Fid%252Fapi%252Fredirect%253FclientId%253D3446cd72694c4a4485d81b77adbb2141%2526responseType%253Dcode).
 
-10. Now run `START.bat` or `npm start` in the command prompt / terminal!
+10. Now run `START.bat`, `run.sh` or `npm start` in the command prompt / terminal!
 
 11. When it finally asks for authorization code, put this part **ONLY**.
 
