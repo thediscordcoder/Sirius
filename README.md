@@ -44,3 +44,5 @@ For any support, join [this](https://discord.gg/XAaeXAd) Discord server.
 
 ## Credits
 Thanks to [Oli](https://github.com/xMistt), [Brain](https://github.com/BigBrain21) and [TJ](https://github.com/TJ-23) for inspiration of the bot.
+
+[![Run on Repl.it](https://repl.it/badge/github/Azlxy/Sirius)](https://repl.it/github/Azlxy/Sirius)
