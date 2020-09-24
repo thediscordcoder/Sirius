@@ -3,7 +3,7 @@ const Discord = require('discord.js'),
       fnbr = require('fnbr'),
       fetch = require('node-fetch'),
       moment = require('moment'),
-      config = require('./config.json'),
+      config = require('./config'),
       { Client, Enums } = require('fnbr'),
       { discordUserStatus, customJoinMessage, token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config');
 
