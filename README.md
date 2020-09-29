@@ -42,10 +42,6 @@ And press `ENTER`!
 ## Support
 For any support, join [this](https://discord.gg/XAaeXAd) Discord server.
 
-Or use this:
-
-<iframe src="https://discord.com/widget?id=740579534021197896&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-
 ## Credits
 Thanks to [Oli](https://github.com/xMistt), [Brain](https://github.com/BigBrain21) and [TJ](https://github.com/TJ-23) for inspiration of the bot.
 
