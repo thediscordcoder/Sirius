@@ -629,13 +629,15 @@ discord.on('message', async message => {
 
   if (command === 'fortknight') {
      if (!fortnite.party) return notReady(message);
-     fortnite.party.me.setOutfit('CID_035_Athena_Commando_M_Medieval');
+     const knights = ["CID_034_Athena_Commando_F_Medieval", "CID_032_Athena_Commando_M_Medieval", "CID_033_Athena_Commando_F_Medieval"]
+     const knight = Math.floor(Math.random() * knights.length);
+     fortnite.party.me.setOutfit(knights[knight]);
      fortnite.party.me.setBackpack('BID_004_BlackKnight');
      fortnite.party.me.setPickaxe('Pickaxe_Medieval');
      const embed = new Discord.MessageEmbed()
     .setColor('GREEN')
     .setTitle(':green_circle: Success')
-    .setDescription('Equipped all items in the Fort Knights set.')
+    .setDescription(`Equipped random knight from the set: ${knights[knight]} and set the knight shield + pickaxe`)
     message.channel.send(embed);
   }
 
