@@ -16,6 +16,8 @@ module.exports = {
   fortniteKairosID: "CID_028_Athena_Commando_F",
   acceptInvite: true,
   acceptFriend: true,
+  useRandomSkins: false,
+  randomSkins:["CID_028_Athena_Commando_F", "CID_001_Athena_Commando_F_Default"],
   ownerIDs: ["OWNER_ID"],
   ownerOnly: true
 }
