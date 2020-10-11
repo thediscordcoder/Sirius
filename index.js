@@ -5,7 +5,7 @@ const Discord = require('discord.js'),
       moment = require('moment'),
       config = require('./config'),
       { Client, Enums } = require('fnbr'),
-      { discordUserStatus, customJoinMessage, token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID } = require('./config');
+      { discordUserStatus, customJoinMessage, token, cid, bid, eid, bp, level, pickaxeId, prefix, ownerOnly, ownerIDs, acceptInvite, acceptFriend, discordStatus, discordStatusType, fortniteStatus, fortnitePlatform, fortniteKairosID, useRandomSkins, randomSkins } = require('./config');
 
 const { readFile, writeFile } = require('fs').promises;
 
@@ -724,7 +724,11 @@ fortnite.on('friend:request', (request) => {
 });
 
 fortnite.on('ready', () => {
-  fortnite.party.me.setOutfit(cid);
+  if (useRandomSkins === true) {
+    fortnite.party.me.setOutfit(cid);
+    const skintouse = Math.floor(Math.random() * randomSkins.length);
+    fortnite.party.me.setOutfit(randomSkins[skintouse]);
+  }
   fortnite.party.me.setEmote(eid);
   fortnite.party.me.setBackpack(bid);
   fortnite.party.me.setPickaxe(pickaxeId);
