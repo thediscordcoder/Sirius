@@ -1,0 +1,20 @@
+{
+  "name": "sirius",
+  "version": "1.0.0",
+  "description": "An easy to use Fortnite lobbybot.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "fortnite",
+    "lobbybot",
+    "discord"
+  ],
+  "author": "Azlxy, Wavy",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "fnbr": "^1.4.0"
+  }
+}
