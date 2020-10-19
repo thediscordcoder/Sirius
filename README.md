@@ -40,7 +40,7 @@ or run `install.sh`
 And press `ENTER`!
 
 ## Support
-For any support, join [this](https://discord.gg/XAaeXAd) Discord server.
+For any support, join [discord.gg/XAaeXAd](https://discord.gg/XAaeXAd).
 
 ## Credits
 Thanks to [Oli](https://github.com/xMistt), [Brain](https://github.com/BigBrain21) and [TJ](https://github.com/TJ-23) for inspiration of the bot.
