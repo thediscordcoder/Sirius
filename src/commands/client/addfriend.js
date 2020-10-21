@@ -4,7 +4,7 @@ module.exports = {
   name: 'addfriend',
   description: 'Send a friend request to someone.',
   category: 'client',
-  aliases: ['friendrequest'],
+  aliases: ['add', 'friendrequest'],
   usage: '<user>',
   example: 'Azlxy.',
 
