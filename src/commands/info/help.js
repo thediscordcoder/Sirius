@@ -33,14 +33,15 @@ module.exports = {
        Category ➟ **${command.category}**
        Aliases ➟ **${command.aliases ? command.aliases.map(x => x).join(', ') : 'None'}**
        Usage ➟ **${command.usage ? command.usage : 'None'}**
-       Example ➟ **${prefix}${command.name} ${command.example}**`)
+       Example ➟ **${prefix}${command.name} ${command.example}**
+       [Join our Discord server!](https://discord.io/siriuss)`)
        .setFooter(`Sirius | ${client.commands.size} commands`, 'https://cdn.discordapp.com/attachments/749665296226189312/765248124666511390/unknown.png');
        message.channel.send(cmdEmbed);
     } else {
     const embed = new MessageEmbed()
     .setColor('RANDOM')
     .setAuthor('Commands')
-    .setDescription(`Here's a list of available commands, use \`${prefix}help <command>\` to view more about a command.`)
+    .setDescription(`Here's a list of available commands, use \`${prefix}help <command>\` to view more about a command.\n[Join our Discord server!](https://discord.io/siriuss)`)
     .addField(`Client [${commands.client.size}]`, commands.client.map(x => `\`${x.name}\``).join(', '))
     .addField(`Party [${commands.party.size}]`, commands.party.map(x => `\`${x.name}\``).join(', '))
     .addField(`Cosmetic [${commands.cosmetic.size}]`, commands.cosmetic.map(x => `\`${x.name}\``).join(', '))
