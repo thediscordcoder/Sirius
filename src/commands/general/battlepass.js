@@ -10,7 +10,7 @@ module.exports = {
 
   run: async (client, bot, message, args, getCosmetic) => {
     const bp = args[0];
-    if (!bp || isNaN(bp)) return error2('Please provide a level; level is not a number.');
+    if (!bp || isNaN(bp)) return error2('Please provide a level; level is not a number.', message);
 
     bot.party.me.setBattlepass(true, parseInt(bp), 100, 100);
     success3(`Battlepass level has been set to **${bp}**.`, message);
