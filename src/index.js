@@ -115,7 +115,6 @@ async function getCosmetic(name, backend) {
 
   await bot.login();
   client.login(config.discord.token);
-  console.log('[SIRIUS] [FORTNITE]', `Client ready as ${bot.user.displayName}.`);
 
   client.on('ready', () => {
     const replaced = config.discord.status.replace('%clientUserDisplayName%', bot.user.displayName).replace('%PartyMemberCount%', bot.party.members.size).replace('%ClientPartyUserOutfit%', bot.party.me.outfit)
@@ -125,5 +124,6 @@ async function getCosmetic(name, backend) {
     client.user.setActivity(replaced, { type: config.discord.statusType });
 
     console.log('[SIRIUS] [DISCORD]', `Client ready as ${client.user.tag} [${client.commands.size} commands]`);
+    console.log('[SIRIUS] [FORTNITE]', `Client ready as ${bot.user.displayName}.`);
   });
 })();
