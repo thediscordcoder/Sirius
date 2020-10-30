@@ -100,15 +100,17 @@ async function getCosmetic(name, backend) {
   });
 
   bot.on('ready', () => {
-    let cid = config.fortnite.cid;
-    let bid = config.fortnite.bid;
-    let eid = config.fortnite.eid;
-    let pickaxe_id = config.fortnite.pickaxe_id;
+    const cosmetics = {
+      cid: config.fortnite.cid,
+      bid: config.fortnite.bid,
+      eid: config.fortnite.eid,
+      pickaxe_id: config.fortnite.pickaxe_id
+    };
 
-    bot.party.me.setOutfit(cid);
-    bot.party.me.setBackpack(bid);
-    bot.party.me.setEmote(eid);
-    bot.party.me.setPickaxe(pickaxe_id);
+    bot.party.me.setOutfit(cosmetics.cid);
+    bot.party.me.setBackpack(cosmetics.bid);
+    bot.party.me.setEmote(cosmetics.eid);
+    bot.party.me.setPickaxe(cosmetics.pickaxe_id);
   });
 
   await bot.login();
