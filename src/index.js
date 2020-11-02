@@ -69,6 +69,7 @@ async function getCosmetic(name, backend) {
   bot.on('deviceauth:created', (da) => writeFile('./deviceAuth.json', JSON.stringify(da, null, 2)));
 
   bot.on('party:member:joined', member => {
+    if (member.displayName === bot.user.displayName) return;
     console.log('[SIRIUS] [FORTNITE]', `${member.displayName} has joined the party. New member count: ${bot.party.members.size}.`);
     if (!config.fortnite.joinMessage || config.fortnite.joinMessage === '') return;
     const msg = config.fortnite.joinMessage.replace('%memberName%', member.displayName).replace('%memberCount%', bot.party.members.size);
