@@ -29,7 +29,7 @@ or run `install.sh`
 
 8. [Create](https://epicgames.com/id/register) an Epic Games account.
 
-9. Configure the bot in `config.json` and enter the authorization code when starting [here](https://www.epicgames.com/id/logout?redirectUrl=https%3A//www.epicgames.com/id/login%3FredirectUrl%3Dhttps%253A%252F%252Fwww.epicgames.com%252Fid%252Fapi%252Fredirect%253FclientId%253D3446cd72694c4a4485d81b77adbb2141%2526responseType%253Dcode).
+9. Configure the bot in `config.js` and enter the authorization code when starting [here](https://www.epicgames.com/id/logout?redirectUrl=https%3A//www.epicgames.com/id/login%3FredirectUrl%3Dhttps%253A%252F%252Fwww.epicgames.com%252Fid%252Fapi%252Fredirect%253FclientId%253D3446cd72694c4a4485d81b77adbb2141%2526responseType%253Dcode).
 
 10. Now run `START.bat`, `run.sh` or `npm start` in the command prompt / terminal!
 
