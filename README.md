@@ -12,7 +12,7 @@ npm install
 ```
 or run `INSTALL.bat`
 
-or run `install.sh`
+or run `INSTALL.sh`
 
 3. [Create](https://discord.com/developers/applications) a bot account.
 
