@@ -94,7 +94,7 @@ async function getCosmetic(name, backend) {
     if (config.fortnite.acceptFriend) {
       request.accept();
     } else {
-      request.decline();
+      request.abort();
     }
 
     console.log('[SIRIUS] [FORTNITE]', `Friend request from ${request.displayName} has been ${config.fortnite.acceptFriend ? 'accepted' : 'declined'}.`);
