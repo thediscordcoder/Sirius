@@ -40,7 +40,7 @@ or run `INSTALL.sh`
 And press `ENTER`!
 
 ## Support
-For any support, join [discord.gg/XAaeXAd](https://discord.gg/XAaeXAd)(now discontinued for some reason).
+For any support, create an issue.
 
 ## Credits
 Thanks to [Oli](https://github.com/xMistt), [Brain](https://github.com/BigBrain21) and [TJ](https://github.com/TJ-23) for inspiration of the bot, [This Nils](https://github.com/ThisNils) and [Alex](https://github.com/AlexT2) for the creation of the library ([Fnbr](https://fnbr.js.org)).
